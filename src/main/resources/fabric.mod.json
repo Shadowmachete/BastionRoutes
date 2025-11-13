@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "bastion-routes",
+	"version": "${version}",
+	"name": "Bastion Routes",
+	"description": "A mod that adds routes for learning how to route bastions.",
+	"authors": [
+		"Shadowmachete"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/bastion-routes/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+          "com.shadowmachete.bastionroutes.BastionRoutes"
+		]
+	},
+	"mixins": [
+		"bastion-routes.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.16.1",
+		"java": ">=8"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

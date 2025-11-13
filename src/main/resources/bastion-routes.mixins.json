@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.shadowmachete.bastionroutes.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinDummyProfiler",
+    "MixinGameRenderer",
+    "MixinOptionsScreen",
+    "ScreenInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
