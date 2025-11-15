@@ -9,22 +9,21 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 public class WaypointManager {
     public static List<Waypoint> waypoints = new java.util.ArrayList<>();
-    public static Path currentSavePath;
-    public static Vec3i globalAnchorPos;
+    public static Vec3i globalAnchorPos = null;
 
     // Toggle rendering of all waypoints
     public static boolean shouldRenderGlobally = true;
 
-    public static void loadWaypoints() {}
+    // public static void loadWaypoints() {}
 
-    public static void saveWaypoints() {}
+    // public static void saveWaypoints() {}
 
     public static void addWaypoint(Waypoint waypoint) {
         waypoints.add(waypoint);
@@ -32,6 +31,10 @@ public class WaypointManager {
 
     public static void removeWaypoint(Waypoint waypoint) {
         waypoints.remove(waypoint);
+    }
+
+    public static void clearWaypoints() {
+        waypoints.clear();
     }
 
     public static void renderWaypoints() {
@@ -59,7 +62,7 @@ public class WaypointManager {
 
     public static void renderWaypoint(@NotNull Waypoint waypoint, BufferBuilder bufferBuilder, Vec3d camPos) {
         Coordinates coords = waypoint.coords;
-        Vec3i pos = null;
+        Vec3i pos;
         if (coords.getType() == CoordinateType.OFFSET) {
             pos = coords.getPos(globalAnchorPos);
         } else {
@@ -93,7 +96,7 @@ public class WaypointManager {
         shouldRenderGlobally = !shouldRenderGlobally;
     }
 
-    public static Optional<Waypoint> getWaypointByUUID(String uuid){
+    public static Optional<Waypoint> getWaypointByUUID(UUID uuid){
         return waypoints.stream().filter(w -> Objects.equals(w.uuid, uuid)).findFirst();
     }
 

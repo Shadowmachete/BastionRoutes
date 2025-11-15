@@ -3,6 +3,7 @@ package com.shadowmachete.bastionroutes.waypoints;
 import com.shadowmachete.bastionroutes.render.Color;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ public class Waypoint {
     public Coordinates coords;
     public String name;
     public boolean shouldRender;
-    public String uuid;
+    public UUID uuid;
     public Color color = Color.WHITE; // Default white colour
 
     // Create waypoint from coordinates and dimension
@@ -27,8 +28,8 @@ public class Waypoint {
             throw new IllegalStateException("Client player is null");
         }
 
-        BlockPos pos = client.player.getBlockPos();
-        Coordinates coords = new Coordinates(pos.getX(), pos.getY(), pos.getZ());
+        Vec3i pos = client.player.getBlockPos();
+        Coordinates coords = new Coordinates(pos);
         // this.name = WaypointManager.getNewPlaceholderName();
         String name = "PLACEHOLDER_NAME"; // TODO: setup the placeholder name creation / automatic naming when recording new waypoint group
         this.coords = coords;
@@ -43,8 +44,8 @@ public class Waypoint {
             throw new IllegalStateException("Client player is null");
         }
 
-        BlockPos pos = client.player.getBlockPos();
-        Coordinates coords = new Coordinates(pos.getX(), pos.getY(), pos.getZ());
+        Vec3i pos = client.player.getBlockPos();
+        Coordinates coords = new Coordinates(pos);
         this.coords = coords;
         this.name = name;
         this.shouldRender = true;
@@ -57,8 +58,8 @@ public class Waypoint {
             throw new IllegalStateException("Client player is null");
         }
 
-        BlockPos pos = client.player.getBlockPos();
-        Coordinates coords = new Coordinates(pos.getX(), pos.getY(), pos.getZ(), type);
+        Vec3i pos = client.player.getBlockPos();
+        Coordinates coords = new Coordinates(pos, type);
         // this.name = WaypointManager.getNewPlaceholderName();
         String name = "PLACEHOLDER_NAME"; // TODO: setup the placeholder name creation / automatic naming when recording new waypoint group
         this.coords = coords;
@@ -73,8 +74,8 @@ public class Waypoint {
             throw new IllegalStateException("Client player is null");
         }
 
-        BlockPos pos = client.player.getBlockPos();
-        Coordinates coords = new Coordinates(pos.getX(), pos.getY(), pos.getZ(), type);
+        Vec3i pos = client.player.getBlockPos();
+        Coordinates coords = new Coordinates(pos, type);
         this.coords = coords;
         this.name = name;
         this.shouldRender = true;
@@ -85,11 +86,7 @@ public class Waypoint {
         this.color = color;
     }
 
-    private static String genUUID(){
-        return UUID
-               .randomUUID()
-               .toString()
-               .replace("-", "")
-               .substring(0, 8);
+    private static UUID genUUID(){
+        return UUID.randomUUID();
     }
 }
