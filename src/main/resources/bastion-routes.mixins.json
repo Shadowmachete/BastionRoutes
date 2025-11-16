@@ -7,6 +7,7 @@
     "MixinGameRenderer",
     "MixinOptionsScreen",
     "MixinCommandManager",
+    "MixinMinecraftClient",
     "ScreenInvoker"
   ],
   "injectors": {
