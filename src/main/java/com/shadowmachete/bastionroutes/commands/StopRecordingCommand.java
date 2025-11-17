@@ -2,7 +2,6 @@ package com.shadowmachete.bastionroutes.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.shadowmachete.bastionroutes.routes.RouteManager;
-import com.shadowmachete.bastionroutes.waypoints.Coordinates;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 

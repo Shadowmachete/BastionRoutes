@@ -11,16 +11,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class BastionRoutes implements ClientModInitializer {
-	public static final String MOD_ID = "bastion-waypoints";
+    public static final String MOD_ID = "bastion-waypoints";
 
-	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
-	@Override
-	public void onInitializeClient() {
-		LOGGER.info("Starting up...");
+    private static boolean inLBP = false;
+
+    @Override
+    public void onInitializeClient() {
+        LOGGER.info("Starting up...");
         BastionStorage.getInstance().reset();
         registerRenderers();
-	}
+    }
 
     private void registerRenderers() {
         RenderQueue.getInstance().add("hand", matrixStack -> {
@@ -34,5 +36,13 @@ public class BastionRoutes implements ClientModInitializer {
 
             RenderSystem.popMatrix();
         });
+    }
+
+    public static boolean inLBP() {
+        return inLBP;
+    }
+
+    public static void setInLBP(boolean LBP) {
+        inLBP = LBP;
     }
 }

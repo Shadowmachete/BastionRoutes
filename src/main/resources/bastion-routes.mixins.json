@@ -3,11 +3,13 @@
   "package": "com.shadowmachete.bastionroutes.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinCommandManager",
     "MixinDummyProfiler",
     "MixinGameRenderer",
-    "MixinOptionsScreen",
-    "MixinCommandManager",
     "MixinMinecraftClient",
+    "MixinOptionsScreen",
+    "MixinPlayerManager",
+    "MixinStructureBlock",
     "ScreenInvoker"
   ],
   "injectors": {

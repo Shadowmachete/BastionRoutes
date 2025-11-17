@@ -6,20 +6,20 @@ public class Coordinates {
     private Vec3i pos;
     public CoordinateType type = CoordinateType.ABSOLUTE;
 
-    public Coordinates(Vec3i pos){
+    public Coordinates(Vec3i pos) {
         this.pos = pos;
     }
 
-    public Coordinates(Vec3i pos, CoordinateType type){
+    public Coordinates(Vec3i pos, CoordinateType type) {
         this.pos = pos;
         this.type = type;
     }
 
-    public Coordinates(int x, int y, int z){
+    public Coordinates(int x, int y, int z) {
         this.pos = new Vec3i(x, y, z);
     }
 
-    public Coordinates(int x, int y, int z, CoordinateType type){
+    public Coordinates(int x, int y, int z, CoordinateType type) {
         this.pos = new Vec3i(x, y, z);
         this.type = type;
     }

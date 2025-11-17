@@ -16,7 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CommandManager.class)
 public abstract class MixinCommandManager {
-    @Shadow @Final private CommandDispatcher<ServerCommandSource> dispatcher;
+    @Shadow
+    @Final
+    private CommandDispatcher<ServerCommandSource> dispatcher;
 
     @Inject(method = "<init>(Lnet/minecraft/server/command/CommandManager$RegistrationEnvironment;)V", at = @At("RETURN"))
     public void CommandManager(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {

@@ -1,100 +1,84 @@
 package com.shadowmachete.bastionroutes.bastion;
 
-import com.google.common.collect.ImmutableList;
-import com.shadowmachete.bastionroutes.util.IntBoundingBox;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructureStart;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.List;
 
 public class BastionData {
     private final BastionType type;
-    private final IntBoundingBox mainBox;
-    private final ImmutableList<IntBoundingBox> componentBoxes;
+    private Vec3i bastionAnchor;
     private long refreshTime;
+    private BlockRotation rotation = BlockRotation.NONE;
 
-    public BastionData(BastionType type, IntBoundingBox mainBox, ImmutableList<IntBoundingBox> componentBoxes) {
+    public BastionData(BastionType type, Vec3i bastionAnchor, BlockRotation rotation) {
         this.type = type;
-        this.mainBox = mainBox;
-        this.componentBoxes = componentBoxes;
+        this.bastionAnchor = bastionAnchor;
+        this.rotation = rotation;
     }
 
-    public BastionData(BastionType type, IntBoundingBox mainBox, ImmutableList<IntBoundingBox> componentBoxes, long refreshTime) {
+    public BastionData(BastionType type, Vec3i bastionAnchor, long refreshTime, BlockRotation rotation) {
         this.type = type;
-        this.mainBox = mainBox;
-        this.componentBoxes = componentBoxes;
+        this.bastionAnchor = bastionAnchor;
         this.refreshTime = refreshTime;
+        this.rotation = rotation;
     }
 
-    public BastionType getBastionType()
-    {
+    public BastionType getBastionType() {
         return this.type;
     }
 
-    public IntBoundingBox getBoundingBox()
-    {
-        return this.mainBox;
+    public Vec3i getBastionAnchor() {
+        return this.bastionAnchor;
     }
 
-    public ImmutableList<IntBoundingBox> getComponents()
-    {
-        return this.componentBoxes;
-    }
-
-    public long getRefreshTime()
-    {
+    public long getRefreshTime() {
         return this.refreshTime;
     }
 
-    public static BastionData fromStructureStart(BastionType type, StructureStart structure)
-    {
-        ImmutableList.Builder<IntBoundingBox> builder = ImmutableList.builder();
+    public BlockRotation getRotation() {
+        return this.rotation;
+    }
+
+    public static BastionData fromStructureStart(BastionType type, StructureStart structure) {
         List<StructurePiece> components = structure.getChildren();
 
-        for (StructurePiece component : components)
-        {
-            builder.add(IntBoundingBox.fromVanillaBox(component.getBoundingBox()));
-        }
+        BlockRotation rotation = components.get(0).getRotation();
 
-        return new BastionData(type, IntBoundingBox.fromVanillaBox(structure.getBoundingBox()), builder.build());
+        Vec3i offset = type.getOffsetQuadrantToStructure();
+        BlockBox quadrantAnchor = structure.getBoundingBox();
+        Vec3i llamaAnchor = new Vec3i(
+                quadrantAnchor.minX + offset.getX(),
+                quadrantAnchor.minY + offset.getY(),
+                quadrantAnchor.minZ + offset.getZ()
+        );
+
+        // TODO: Adjust llamaAnchor offsets based on rotation
+        // Not so important to fix for now since LBP is the main focus
+
+        return new BastionData(type, llamaAnchor, rotation);
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (obj == null || this.getClass() != obj.getClass())
-        {
+        if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
 
         BastionData other = (BastionData) obj;
 
-        if (this.componentBoxes == null)
-        {
-            if (other.componentBoxes != null)
-            {
+        if (this.bastionAnchor == null) {
+            if (other.bastionAnchor != null) {
                 return false;
             }
-        }
-        else if (! this.componentBoxes.equals(other.componentBoxes))
-        {
-            return false;
-        }
-
-        if (this.mainBox == null)
-        {
-            if (other.mainBox != null)
-            {
-                return false;
-            }
-        }
-        else if (!this.mainBox.equals(other.mainBox))
-        {
+        } else if (!this.bastionAnchor.equals(other.bastionAnchor)) {
             return false;
         }
 

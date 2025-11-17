@@ -37,7 +37,7 @@ public class RenderQueue {
     }
 
     public void onRender(String type) {
-        if(this.matrixStack == null || !this.typeRunnableMap.containsKey(type))return;
+        if (this.matrixStack == null || !this.typeRunnableMap.containsKey(type)) return;
         this.typeRunnableMap.get(type).forEach(r -> r.accept(this.matrixStack));
     }
 }

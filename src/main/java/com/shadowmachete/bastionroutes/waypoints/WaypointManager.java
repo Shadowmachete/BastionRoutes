@@ -1,6 +1,8 @@
 package com.shadowmachete.bastionroutes.waypoints;
 
+import com.shadowmachete.bastionroutes.bastion.BastionStorage;
 import com.shadowmachete.bastionroutes.render.Color;
+import com.shadowmachete.bastionroutes.routes.Route;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -21,9 +23,15 @@ public class WaypointManager {
     // Toggle rendering of all waypoints
     public static boolean shouldRenderGlobally = true;
 
-    // public static void loadWaypoints() {}
-
-    // public static void saveWaypoints() {}
+    public static void populateFromRoute(Route route) {
+        for (Waypoint waypoint : route.waypoints) {
+            // TODO: Implement rotation of waypoints based on bastion rotation
+            if (route.rotation != BastionStorage.getInstance().getCurrentBastion().getRotation()) {
+                // waypoint.rotateAroundAnchor(route.rotation, BastionStorage.getInstance().getCurrentBastion().getRotation());
+            }
+            WaypointManager.addWaypoint(waypoint);
+        }
+    }
 
     public static void addWaypoint(Waypoint waypoint) {
         waypoints.add(waypoint);
@@ -92,15 +100,15 @@ public class WaypointManager {
         Tessellator.getInstance().draw();
     }
 
-    public static void toggleGlobalVisibility(){
+    public static void toggleGlobalVisibility() {
         shouldRenderGlobally = !shouldRenderGlobally;
     }
 
-    public static Optional<Waypoint> getWaypointByUUID(UUID uuid){
+    public static Optional<Waypoint> getWaypointByUUID(UUID uuid) {
         return waypoints.stream().filter(w -> Objects.equals(w.uuid, uuid)).findFirst();
     }
 
-    public static Optional<Waypoint> getWaypointByName(String name){
+    public static Optional<Waypoint> getWaypointByName(String name) {
         return waypoints.stream().filter(w -> Objects.equals(w.name, name)).findFirst();
     }
 }

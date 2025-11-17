@@ -1,11 +1,10 @@
 package com.shadowmachete.bastionroutes.routes;
 
+import com.shadowmachete.bastionroutes.bastion.BastionStorage;
 import com.shadowmachete.bastionroutes.waypoints.CoordinateType;
 import com.shadowmachete.bastionroutes.waypoints.Coordinates;
 import com.shadowmachete.bastionroutes.waypoints.Waypoint;
 import com.shadowmachete.bastionroutes.waypoints.WaypointManager;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.Vec3i;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -22,8 +21,13 @@ public class RouteManager {
     private static final List<Waypoint> recordedWaypoints = new java.util.ArrayList<>();
     public static String newRouteName;
 
-    public static void loadRoutes() {}
-    public static void saveRoutes() {}
+    // TODO: Load routes from file
+    public static void loadRoutes() {
+    }
+
+    // TODO: Save routes to file
+    public static void saveRoutes() {
+    }
 
     public static void addRoute(Route route) {
         routes.add(route);
@@ -94,7 +98,7 @@ public class RouteManager {
             throw new IllegalStateException("Not currently recording a route");
         } else {
             recording = false;
-            routes.add(new Route(newRouteName, new java.util.ArrayList<>(recordedWaypoints)));
+            addRoute(new Route(newRouteName, new java.util.ArrayList<>(recordedWaypoints), BastionStorage.getInstance().getCurrentBastion().getRotation(), BastionStorage.getInstance().getCurrentBastion().getBastionType()));
             recordedWaypoints.clear();
         }
     }
@@ -115,7 +119,7 @@ public class RouteManager {
         }
     }
 
-    private static void updateWaypointManager(Route route) {
+    public static void updateWaypointManager(Route route) {
         // Clear existing waypoints
         WaypointManager.clearWaypoints();
 
@@ -123,19 +127,17 @@ public class RouteManager {
             currentRoute = route;
 
             // Add waypoints from the selected route
-            for (Waypoint waypoint : route.waypoints) {
-                WaypointManager.addWaypoint(waypoint);
-            }
+            WaypointManager.populateFromRoute(route);
         } else {
             currentRoute = null;
         }
     }
 
-    public static Optional<Route> getRouteByUUID(UUID uuid){
+    public static Optional<Route> getRouteByUUID(UUID uuid) {
         return routes.stream().filter(w -> Objects.equals(w.uuid, uuid)).findFirst();
     }
 
-    public static Optional<Route> getRouteByName(String name){
+    public static Optional<Route> getRouteByName(String name) {
         return routes.stream().filter(w -> Objects.equals(w.name, name)).findFirst();
     }
 }

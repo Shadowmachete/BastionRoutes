@@ -2,7 +2,7 @@ package com.shadowmachete.bastionroutes.waypoints;
 
 import com.shadowmachete.bastionroutes.render.Color;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.Vec3i;
 
 import java.util.UUID;
@@ -86,7 +86,11 @@ public class Waypoint {
         this.color = color;
     }
 
-    private static UUID genUUID(){
+    private static UUID genUUID() {
         return UUID.randomUUID();
+    }
+
+    // TODO: implement rotation logic
+    public void rotateAroundAnchor(BlockRotation from, BlockRotation to) {
     }
 }
