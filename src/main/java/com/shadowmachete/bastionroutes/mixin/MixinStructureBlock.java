@@ -1,6 +1,5 @@
 package com.shadowmachete.bastionroutes.mixin;
 
-import com.shadowmachete.bastionroutes.BastionRoutes;
 import com.shadowmachete.bastionroutes.bastion.BastionStorage;
 import net.minecraft.block.StructureBlock;
 import net.minecraft.block.entity.StructureBlockBlockEntity;
