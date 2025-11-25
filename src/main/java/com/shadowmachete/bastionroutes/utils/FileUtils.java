@@ -1,5 +1,7 @@
 package com.shadowmachete.bastionroutes.utils;
 
+import static com.shadowmachete.bastionroutes.BastionRoutes.LOGGER;
+
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ public class FileUtils {
 
     public static void loadDefaultIfNotPresent(Path file) throws IOException {
         if (!Files.exists(file)) {
+            LOGGER.info("File {} not found, creating default version.", file.toString());
             Path parent = file.getParent();
             if (parent != null) Files.createDirectories(parent);
 

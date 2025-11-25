@@ -3,6 +3,7 @@ package com.shadowmachete.bastionroutes.bastion;
 import static com.shadowmachete.bastionroutes.BastionRoutes.LOGGER;
 
 import com.shadowmachete.bastionroutes.routes.RouteManager;
+import com.shadowmachete.bastionroutes.utils.Rotation;
 import com.shadowmachete.bastionroutes.waypoints.WaypointManager;
 import net.minecraft.block.entity.StructureBlockBlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -11,7 +12,6 @@ import net.minecraft.server.ServerTask;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructureStart;
-import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -205,7 +205,7 @@ public class BastionStorage {
         if (structureName.contains("entrance_base")) { // new bridge bastion
             LOGGER.info("New bastion anchor pos: {}", blockEntity.getPos());
             this.bridgeCollector.clear();
-            BlockRotation rotation = blockEntity.getRotation();
+            Rotation rotation = Rotation.from(blockEntity.getRotation());
             this.bridgeCollector.setRotation(rotation);
             this.bridgeCollector.setBastionAnchor(blockEntity.getPos());
         }
@@ -237,7 +237,7 @@ public class BastionStorage {
         if (structureName.contains("lower/lower_")) { // new stables bastion
             LOGGER.info("New bastion anchor pos: {}", blockEntity.getPos());
             this.stablesCollector.clear();
-            BlockRotation rotation = blockEntity.getRotation();
+            Rotation rotation = Rotation.from(blockEntity.getRotation());
             this.stablesCollector.setRotation(rotation);
             this.stablesCollector.setBastionAnchor(blockEntity.getPos());
         }
@@ -279,7 +279,7 @@ public class BastionStorage {
         if (structureName.contains("lower/lower_")) { // new treasure bastion
             LOGGER.info("New bastion anchor pos: {}", blockEntity.getPos());
             this.treasureCollector.clear();
-            BlockRotation rotation = blockEntity.getRotation();
+            Rotation rotation = Rotation.from(blockEntity.getRotation());
             this.treasureCollector.setRotation(rotation);
             this.treasureCollector.setBastionAnchor(blockEntity.getPos());
         }
@@ -308,7 +308,7 @@ public class BastionStorage {
         if (structureName.contains("lower/lower_")) { // new housing bastion
             LOGGER.info("New bastion anchor pos: {}", blockEntity.getPos());
             this.housingCollector.clear();
-            BlockRotation rotation = blockEntity.getRotation();
+            Rotation rotation = Rotation.from(blockEntity.getRotation());
             this.housingCollector.setRotation(rotation);
             this.housingCollector.setBastionAnchor(blockEntity.getPos());
         }

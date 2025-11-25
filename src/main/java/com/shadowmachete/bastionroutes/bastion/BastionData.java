@@ -1,5 +1,6 @@
 package com.shadowmachete.bastionroutes.bastion;
 
+import com.shadowmachete.bastionroutes.utils.Rotation;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructureStart;
 import net.minecraft.util.BlockRotation;
@@ -12,15 +13,15 @@ public class BastionData {
     private final BastionType type;
     private Vec3i bastionAnchor;
     private long refreshTime;
-    private BlockRotation rotation = BlockRotation.NONE;
+    private Rotation rotation = Rotation.NONE;
 
-    public BastionData(BastionType type, Vec3i bastionAnchor, BlockRotation rotation) {
+    public BastionData(BastionType type, Vec3i bastionAnchor, Rotation rotation) {
         this.type = type;
         this.bastionAnchor = bastionAnchor;
         this.rotation = rotation;
     }
 
-    public BastionData(BastionType type, Vec3i bastionAnchor, long refreshTime, BlockRotation rotation) {
+    public BastionData(BastionType type, Vec3i bastionAnchor, long refreshTime, Rotation rotation) {
         this.type = type;
         this.bastionAnchor = bastionAnchor;
         this.refreshTime = refreshTime;
@@ -39,14 +40,14 @@ public class BastionData {
         return this.refreshTime;
     }
 
-    public BlockRotation getRotation() {
+    public Rotation getRotation() {
         return this.rotation;
     }
 
     public static BastionData fromStructureStart(BastionType type, StructureStart structure) {
         List<StructurePiece> components = structure.getChildren();
 
-        BlockRotation rotation = components.get(0).getRotation();
+        Rotation rotation = Rotation.from(components.get(0).getRotation());
 
         Vec3i offset = type.getOffsetQuadrantToStructure();
         BlockBox quadrantAnchor = structure.getBoundingBox();

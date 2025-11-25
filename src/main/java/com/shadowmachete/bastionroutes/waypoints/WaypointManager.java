@@ -1,5 +1,6 @@
 package com.shadowmachete.bastionroutes.waypoints;
 
+import static com.shadowmachete.bastionroutes.BastionRoutes.LOGGER;
 import com.shadowmachete.bastionroutes.bastion.BastionStorage;
 import com.shadowmachete.bastionroutes.render.Color;
 import com.shadowmachete.bastionroutes.routes.Route;

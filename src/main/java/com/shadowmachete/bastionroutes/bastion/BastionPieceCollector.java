@@ -1,5 +1,6 @@
 package com.shadowmachete.bastionroutes.bastion;
 
+import com.shadowmachete.bastionroutes.utils.Rotation;
 import net.minecraft.block.entity.StructureBlockBlockEntity;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.Vec3i;
@@ -10,7 +11,7 @@ import java.util.List;
 public class BastionPieceCollector {
     private final List<StructureBlockBlockEntity> collector = new ArrayList<>();
     private final List<String> pieces = new ArrayList<>();
-    private BlockRotation rotation = BlockRotation.NONE;
+    private Rotation rotation = Rotation.NONE;
     private Vec3i bastionAnchor = new Vec3i(0, 0, 0);
 
     public void addPiece(StructureBlockBlockEntity structureBlock, String pieceName) {
@@ -21,7 +22,7 @@ public class BastionPieceCollector {
     public void clear() {
         collector.clear();
         pieces.clear();
-        rotation = BlockRotation.NONE;
+        rotation = Rotation.NONE;
     }
 
     public List<StructureBlockBlockEntity> getCollector() {
@@ -32,11 +33,11 @@ public class BastionPieceCollector {
         return pieces;
     }
 
-    public BlockRotation getRotation() {
+    public Rotation getRotation() {
         return rotation;
     }
 
-    public void setRotation(BlockRotation rotation) {
+    public void setRotation(Rotation rotation) {
         this.rotation = rotation;
     }
 
