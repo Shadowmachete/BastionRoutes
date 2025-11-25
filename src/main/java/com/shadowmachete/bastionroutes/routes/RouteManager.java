@@ -4,6 +4,7 @@ import static com.shadowmachete.bastionroutes.BastionRoutes.LOGGER;
 
 import com.google.gson.Gson;
 import com.shadowmachete.bastionroutes.bastion.BastionStorage;
+import com.shadowmachete.bastionroutes.bastion.BastionType;
 import com.shadowmachete.bastionroutes.utils.FileUtils;
 import com.shadowmachete.bastionroutes.waypoints.CoordinateType;
 import com.shadowmachete.bastionroutes.waypoints.Coordinates;
@@ -160,5 +161,23 @@ public class RouteManager {
 
     public static Optional<Route> getRouteByName(String name) {
         return routes.stream().filter(w -> Objects.equals(w.name, name)).findFirst();
+    }
+
+    public static String[] getRoutes() {
+        return routes.stream().map(route -> {
+            if (route.bastionType == BastionStorage.getInstance().getCurrentBastion().getBastionType()) return route.name;
+            else return null;
+        }).filter(Objects::nonNull).toArray(String[]::new);
+    }
+
+    public static String[] getRoutes(String strBastionType) {
+        BastionType bastionType = BastionStorage.getBastionType(strBastionType);
+        if (bastionType == BastionType.UNKNOWN) {
+            return new String[0];
+        }
+        return routes.stream().map(route -> {
+            if (route.bastionType == bastionType) return route.name;
+            else return null;
+        }).filter(Objects::nonNull).toArray(String[]::new);
     }
 }

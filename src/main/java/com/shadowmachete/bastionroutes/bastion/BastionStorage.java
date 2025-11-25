@@ -6,7 +6,6 @@ import com.shadowmachete.bastionroutes.routes.RouteManager;
 import com.shadowmachete.bastionroutes.waypoints.WaypointManager;
 import net.minecraft.block.entity.StructureBlockBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.world.ServerWorld;
@@ -332,14 +331,14 @@ public class BastionStorage {
         return last_segment.contains("plate_");
     }
 
-    private static @NotNull BastionType getBastionType(String location_tag) {
-        if (location_tag.contains("bridge")) {
+    public static @NotNull BastionType getBastionType(String string) {
+        if (string.contains("bridge")) {
             return BastionType.BRIDGE;
-        } else if (location_tag.contains("hoglin_stable")) {
+        } else if (string.contains("stable")) {
             return BastionType.STABLES;
-        } else if (location_tag.contains("units")) {
+        } else if (string.contains("units") || string.contains("housing")) {
             return BastionType.HOUSING;
-        } else if (location_tag.contains("treasure")) {
+        } else if (string.contains("treasure")) {
             return BastionType.TREASURE;
         } else {
             return BastionType.UNKNOWN;

@@ -1,10 +1,7 @@
 package com.shadowmachete.bastionroutes.mixin;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.shadowmachete.bastionroutes.commands.AddWaypointCommand;
-import com.shadowmachete.bastionroutes.commands.RecordRouteCommand;
-import com.shadowmachete.bastionroutes.commands.SetCurrentRouteCommand;
-import com.shadowmachete.bastionroutes.commands.StopRecordingCommand;
+import com.shadowmachete.bastionroutes.commands.*;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import org.spongepowered.asm.mixin.Final;
@@ -26,5 +23,6 @@ public abstract class MixinCommandManager {
         AddWaypointCommand.register(dispatcher);
         StopRecordingCommand.register(dispatcher);
         SetCurrentRouteCommand.register(dispatcher);
+        ViewRoutesCommand.register(dispatcher);
     }
 }

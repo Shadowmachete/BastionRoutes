@@ -1,22 +1,23 @@
 # BastionRoutes
 
-# THE MOD IS HEAVILY WIP AND HAS NOT IMPLEMENTED THE FEATURES YET
-
 A mod for Fabric on Minecraft 1.16.1 to help speedrunners learn bastion routes. The mod can record waypoints of routes to indicate where to go.
 
 ## Features
 ### Practicing a route
-1. Choose any route from the menu for the bastion you are practicing
+1. Manually set the current route using `/setcurrentroute [name]` ~~Choose any route from the menu for the bastion you are practicing~~ (menu not developed yet)
+
+**`/viewroutes [bastion type]` can be used to see all available routes for the bastion type, the bastion type is optional and will default to the current bastion.**
+
 2. Go to the bastion (e.g. in Llama's Bastion Practice map)
 3. Follow the labelled waypoints to practice the route
 ### Recording a route
-1. Run the `/record [route name] [bastion type]` command. If the bastion type is not provided, the mod will attempt to guess the bastion type by the current bastion.
+1. Run the `/record [route name]` command. The route will be recorded for the current bastion type you are in.
 
 **WARNING: Recording routes with the same name and bastion type will override the old route.**
 
 3. Go to the locations to place the waypoints in order and run `/add [name]` at each point. The name is optional and a default numbering will be used otherwise.
 3. Run `/save` to stop the recording and save the route
-### Configuring routes
+### Configuring routes (WIP)
 Colours of all waypoints, next waypoint and completed waypoints can be configured directly in the menu.
 Coordinate offsets of all waypoints can be manually configured in the menu or changed by rerecording the route.
 
