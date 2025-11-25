@@ -6,6 +6,7 @@ import com.shadowmachete.bastionroutes.routes.RouteManager;
 import com.shadowmachete.bastionroutes.waypoints.WaypointManager;
 import net.minecraft.block.entity.StructureBlockBlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.world.ServerWorld;
@@ -195,15 +196,14 @@ public class BastionStorage {
                 LOGGER.info("Current route bastion type matches detected bastion type.");
                 WaypointManager.shouldRenderGlobally = true;
                 WaypointManager.populateFromRoute(RouteManager.currentRoute);
+                WaypointManager.currentWaypointIndex = 0;
             }
         }
     }
 
     private void collectBridgePieces(StructureBlockBlockEntity blockEntity) {
         String structureName = blockEntity.getStructureName();
-
         if (structureName.contains("entrance_base")) { // new bridge bastion
-            updateRoutesBasedOnBastion(BastionType.BRIDGE);
             LOGGER.info("New bastion anchor pos: {}", blockEntity.getPos());
             this.bridgeCollector.clear();
             BlockRotation rotation = blockEntity.getRotation();
@@ -219,6 +219,7 @@ public class BastionStorage {
             // bridge pieces done collecting
             LOGGER.info("Full bridge bastion pieces collected");
             setBastion(bridgeCollector.toBastionData("BRIDGE"));
+            updateRoutesBasedOnBastion(BastionType.BRIDGE);
         }
     }
 
@@ -235,7 +236,6 @@ public class BastionStorage {
         String structureName = blockEntity.getStructureName();
 
         if (structureName.contains("lower/lower_")) { // new stables bastion
-            updateRoutesBasedOnBastion(BastionType.STABLES);
             LOGGER.info("New bastion anchor pos: {}", blockEntity.getPos());
             this.stablesCollector.clear();
             BlockRotation rotation = blockEntity.getRotation();
@@ -251,6 +251,7 @@ public class BastionStorage {
             // stables pieces done collecting
             LOGGER.info("Full stables bastion pieces collected");
             setBastion(stablesCollector.toBastionData("STABLES"));
+            updateRoutesBasedOnBastion(BastionType.STABLES);
         }
     }
 
@@ -277,7 +278,6 @@ public class BastionStorage {
         String structureName = blockEntity.getStructureName();
 
         if (structureName.contains("lower/lower_")) { // new treasure bastion
-            updateRoutesBasedOnBastion(BastionType.TREASURE);
             LOGGER.info("New bastion anchor pos: {}", blockEntity.getPos());
             this.treasureCollector.clear();
             BlockRotation rotation = blockEntity.getRotation();
@@ -293,6 +293,7 @@ public class BastionStorage {
             // treasure pieces done collecting
             LOGGER.info("Full treasure bastion pieces collected");
             setBastion(treasureCollector.toBastionData("TREASURE"));
+            updateRoutesBasedOnBastion(BastionType.TREASURE);
         }
     }
 
@@ -306,7 +307,6 @@ public class BastionStorage {
         String structureName = blockEntity.getStructureName();
 
         if (structureName.contains("lower/lower_")) { // new housing bastion
-            updateRoutesBasedOnBastion(BastionType.HOUSING);
             LOGGER.info("New bastion anchor pos: {}", blockEntity.getPos());
             this.housingCollector.clear();
             BlockRotation rotation = blockEntity.getRotation();
@@ -322,6 +322,7 @@ public class BastionStorage {
             // housing pieces done collecting
             LOGGER.info("Full housing bastion pieces collected");
             setBastion(housingCollector.toBastionData("HOUSING"));
+            updateRoutesBasedOnBastion(BastionType.HOUSING);
         }
     }
 

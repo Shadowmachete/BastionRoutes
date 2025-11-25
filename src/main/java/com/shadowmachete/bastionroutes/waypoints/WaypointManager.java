@@ -19,17 +19,19 @@ import java.util.UUID;
 public class WaypointManager {
     public static List<Waypoint> waypoints = new java.util.ArrayList<>();
     public static Vec3i globalAnchorPos = null;
+    public static int currentWaypointIndex = -1;
 
-    // Toggle rendering of all waypoints
     public static boolean shouldRenderGlobally = true;
 
     public static void populateFromRoute(Route route) {
+        clearWaypoints();
         for (Waypoint waypoint : route.waypoints) {
-            // TODO: Implement rotation of waypoints based on bastion rotation
             if (route.rotation != BastionStorage.getInstance().getCurrentBastion().getRotation()) {
-                // waypoint.rotateAroundAnchor(route.rotation, BastionStorage.getInstance().getCurrentBastion().getRotation());
+                Waypoint rotatedWaypoint = waypoint.rotateAroundAnchor(route.rotation, BastionStorage.getInstance().getCurrentBastion().getRotation());
+                WaypointManager.addWaypoint(rotatedWaypoint);
+            } else {
+                WaypointManager.addWaypoint(waypoint);
             }
-            WaypointManager.addWaypoint(waypoint);
         }
     }
 
@@ -43,6 +45,34 @@ public class WaypointManager {
 
     public static void clearWaypoints() {
         waypoints.clear();
+    }
+
+    public static void updateCurrentWaypointIndex(MinecraftClient client) {
+        // if client is at the same block or within +- 0.5 of the current waypoint, increment the index
+        if (currentWaypointIndex == -1) {
+            return; // no current waypoint to check
+        }
+
+        if (currentWaypointIndex > waypoints.size() - 1) {
+            currentWaypointIndex = -1; // reset waypoint if we have reached the end
+            return;
+        }
+
+        if (client.player != null) {
+            Waypoint currentWaypoint = waypoints.get(currentWaypointIndex);
+            Vec3i waypointPos;
+            if (currentWaypoint.coords.getType() == CoordinateType.OFFSET) {
+                waypointPos = currentWaypoint.coords.getPos(globalAnchorPos);
+            } else {
+                waypointPos = currentWaypoint.coords.getPos();
+            }
+            Vec3d playerPos = client.player.getPos();
+            if (Math.abs(playerPos.x - (waypointPos.getX() + 1.0)) <= 1.0 &&
+                Math.abs(playerPos.y - (waypointPos.getY() + 1.0)) <= 1.0 &&
+                Math.abs(playerPos.z - (waypointPos.getZ() + 1.0)) <= 1.0) {
+                currentWaypointIndex++;
+            }
+        }
     }
 
     public static void renderWaypoints() {
@@ -59,7 +89,16 @@ public class WaypointManager {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
 
-        for (Waypoint waypoint : waypoints) {
+        for (int i = 0; i < waypoints.size(); i++) {
+            Waypoint waypoint = waypoints.get(i);
+            if (i < currentWaypointIndex) {
+                waypoint.setColor(Color.GRAY);
+            } else if (i == currentWaypointIndex) {
+                waypoint.setColor(Color.AQUA);
+            } else {
+                waypoint.setColor(Color.WHITE);
+            }
+
             if (!waypoint.shouldRender || waypoint.coords.getType() == CoordinateType.OFFSET && globalAnchorPos == null) {
                 continue;
             }

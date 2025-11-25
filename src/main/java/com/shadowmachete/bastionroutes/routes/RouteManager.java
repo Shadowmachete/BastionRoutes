@@ -1,16 +1,17 @@
 package com.shadowmachete.bastionroutes.routes;
 
+import static com.shadowmachete.bastionroutes.BastionRoutes.LOGGER;
+
+import com.google.gson.Gson;
 import com.shadowmachete.bastionroutes.bastion.BastionStorage;
+import com.shadowmachete.bastionroutes.utils.FileUtils;
 import com.shadowmachete.bastionroutes.waypoints.CoordinateType;
 import com.shadowmachete.bastionroutes.waypoints.Coordinates;
 import com.shadowmachete.bastionroutes.waypoints.Waypoint;
 import com.shadowmachete.bastionroutes.waypoints.WaypointManager;
 
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class RouteManager {
     public static List<Route> routes = new java.util.ArrayList<>();
@@ -21,20 +22,39 @@ public class RouteManager {
     private static final List<Waypoint> recordedWaypoints = new java.util.ArrayList<>();
     public static String newRouteName;
 
-    // TODO: Load routes from file
     public static void loadRoutes() {
+        currentSavePath = FileUtils.getSavePath().resolve("bastion_routes.json");
+        try {
+            String json = FileUtils.readFile(currentSavePath);
+            Gson gson = new Gson();
+            Route[] loadedRoutes = gson.fromJson(json, Route[].class);
+            routes = new java.util.ArrayList<>(java.util.Arrays.asList(loadedRoutes));
+        } catch (Exception e) {
+            LOGGER.error("Ran into error while loading routes: {}", String.valueOf(e));
+        }
     }
 
-    // TODO: Save routes to file
     public static void saveRoutes() {
+        Gson gson = new Gson();
+        String json = gson.toJson(routes);
+
+        try {
+            FileUtils.writeFile(currentSavePath, json);
+        } catch (Exception e) {
+            LOGGER.error("Ran into error while saving routes: {}", String.valueOf(e));
+        }
     }
 
     public static void addRoute(Route route) {
         routes.add(route);
+
+        saveRoutes();
     }
 
     public static void removeRoute(Route route) {
         routes.remove(route);
+
+        saveRoutes();
     }
 
     public static void recordRoute(String name) {
@@ -128,6 +148,7 @@ public class RouteManager {
 
             // Add waypoints from the selected route
             WaypointManager.populateFromRoute(route);
+            WaypointManager.currentWaypointIndex = 0;
         } else {
             currentRoute = null;
         }

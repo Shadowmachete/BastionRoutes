@@ -17,10 +17,8 @@ public abstract class MixinStructureBlock {
     @Inject(method = "doAction", at = @At("HEAD"))
     private void doAction(StructureBlockBlockEntity blockEntity, CallbackInfo ci) {
         if (Objects.requireNonNull(blockEntity.getMode()) == StructureBlockMode.LOAD && blockEntity.getStructureName().contains("bastionbuilder") && !blockEntity.getStructureName().contains("processors")) {
-            // This is also probably an indicator that we're in a Bastion/LBP world, but we already check that on player connect
-            // Just in case lets update here too
-            // Sorry if that's not the intention
-            BastionRoutes.setInLBP(true);
+            // This is also probably an indicator that we're in a Bastion/LBP world
+            // BastionRoutes.setInLBP(true);
             BastionStorage.getInstance().addBastionDataFromStructureBlock(blockEntity);
         }
     }

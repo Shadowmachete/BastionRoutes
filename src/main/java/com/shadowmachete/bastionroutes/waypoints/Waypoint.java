@@ -1,6 +1,7 @@
 package com.shadowmachete.bastionroutes.waypoints;
 
 import com.shadowmachete.bastionroutes.render.Color;
+import com.shadowmachete.bastionroutes.utils.RotationUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.Vec3i;
@@ -90,7 +91,32 @@ public class Waypoint {
         return UUID.randomUUID();
     }
 
-    // TODO: implement rotation logic
-    public void rotateAroundAnchor(BlockRotation from, BlockRotation to) {
+    public Waypoint rotateAroundAnchor(BlockRotation from, BlockRotation to) {
+        if (this.coords.getType() == CoordinateType.ABSOLUTE) {
+            throw new IllegalStateException("Cannot rotate ABSOLUTE waypoint");
+        }
+
+        BlockRotation relative = RotationUtils.calculateRelativeRotation(from, to);
+
+        Vec3i pos = this.coords.getPos(WaypointManager.globalAnchorPos);
+        int x = pos.getX() - WaypointManager.globalAnchorPos.getX();
+        int y = pos.getY() - WaypointManager.globalAnchorPos.getY();
+        int z = pos.getZ() - WaypointManager.globalAnchorPos.getZ();
+
+        int rx = x;
+        int rz = z;
+
+        if (relative == BlockRotation.CLOCKWISE_90) {
+            rx = -z;
+            rz = x;
+        } else if (relative == BlockRotation.COUNTERCLOCKWISE_90) {
+            rx = z;
+            rz = -x;
+        } else if (relative == BlockRotation.CLOCKWISE_180) {
+            rx = -x;
+            rz = -z;
+        }
+
+        return new Waypoint(new Coordinates(rx, y, rz, CoordinateType.OFFSET), this.name);
     }
 }
